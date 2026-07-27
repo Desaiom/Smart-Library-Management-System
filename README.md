@@ -1,6 +1,6 @@
 # Smart Library Management System
 
-A placement-ready, enterprise-architecture full-stack library system.
+A enterprise-architecture full-stack library system.
 
 - **Backend:** Spring Boot 3.3 (Java 21), Spring Security + JWT, Spring Data JPA (Hibernate), MySQL (H2 for quick local runs), Lombok, ModelMapper, springdoc/OpenAPI.
 - **Frontend:** React (Vite) + Bootstrap 5 + Axios (to be added).
@@ -12,8 +12,8 @@ A placement-ready, enterprise-architecture full-stack library system.
 ```
 smart-library/
   backend/    Spring Boot (Maven)
-  frontend/   React (Vite + Bootstrap 5)   <-- pending
-  docs/       README, diagrams, API docs   <-- pending
+  frontend/   React (Vite + Bootstrap 5)   
+  docs/       README, diagrams, API docs   
 ```
 
 ## Run the backend
@@ -35,7 +35,7 @@ SPRING_PROFILES_ACTIVE=prod DB_URL=... DB_USERNAME=... DB_PASSWORD=... JWT_SECRE
 
 ## Build status — COMPLETE
 
-All backend layers are implemented (90 Java classes):
+All backend layers are implemented :
 - Config, Entities, Repositories, DTOs, Exceptions, Security (JWT)
 - **Mappers**: BookMapper, CategoryMapper, BorrowMapper, ReviewMapper, UserMapper
 - **Services + Impl**: Auth, Book, Category, Borrow, Review, User, Dashboard
