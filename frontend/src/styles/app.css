@@ -1,0 +1,59 @@
+:root {
+  --sl-primary: #2b3a67;
+  --sl-accent: #4361ee;
+}
+
+body {
+  background-color: #f5f6fa;
+  min-height: 100vh;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.sl-hero {
+  background: linear-gradient(135deg, var(--sl-primary), var(--sl-accent));
+  color: #fff;
+  border-radius: 1rem;
+}
+
+.book-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  height: 100%;
+}
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.book-cover {
+  height: 180px;
+  object-fit: cover;
+  background: #e9ecef;
+}
+
+.stat-card {
+  border: none;
+  border-radius: 0.9rem;
+}
+
+.stat-card .stat-icon {
+  font-size: 2rem;
+  opacity: 0.85;
+}
+
+.page-min {
+  min-height: calc(100vh - 140px);
+}
+
+.auth-wrapper {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+}
+
+.rating-stars i {
+  color: #f4b400;
+}
