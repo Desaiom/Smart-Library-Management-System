@@ -2,7 +2,23 @@
   --sl-primary: #2b3a67;
   --sl-accent: #4361ee;
 }
+.signup-btn {
+  border-radius: 25px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.navbar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  height: 38px;
+}
+.signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2) !important;
+}
 body {
   background-color: #f5f6fa;
   min-height: 100vh;

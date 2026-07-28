@@ -1,22 +1,23 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import ProtectedRoute from './components/ProtectedRoute';
+import { Routes, Route, Navigate } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Books from './pages/Books';
-import BookDetails from './pages/BookDetails';
-import BookForm from './pages/BookForm';
-import MyBorrows from './pages/MyBorrows';
-import ManageBorrows from './pages/ManageBorrows';
-import Categories from './pages/Categories';
-import Users from './pages/Users';
-import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile';
-import NotFound from './pages/NotFound';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+// import AdminRegister from "./pages/auth/AdminRegister";
+import Books from "./pages/Books";
+import BookDetails from "./pages/BookDetails";
+import BookForm from "./pages/BookForm";
+import MyBorrows from "./pages/MyBorrows";
+import ManageBorrows from "./pages/ManageBorrows";
+import Categories from "./pages/Categories";
+import Users from "./pages/Users";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
 
-const STAFF = ['ADMIN', 'LIBRARIAN'];
+const STAFF = ["ADMIN", "LIBRARIAN"];
 
 export default function App() {
   return (
@@ -27,7 +28,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
+          {/* <Route path="/register/admin" element={<AdminRegister />} /> */}
+          {/* <Route path="/register/librarian" element={<LibrarianRegister />} /> */}
           <Route path="/books" element={<Books />} />
           <Route path="/books/:id" element={<BookDetails />} />
 
@@ -92,7 +94,7 @@ export default function App() {
           <Route
             path="/users"
             element={
-              <ProtectedRoute roles={['ADMIN']}>
+              <ProtectedRoute roles={["ADMIN"]}>
                 <Users />
               </ProtectedRoute>
             }

@@ -70,12 +70,26 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        System.out.println("LOGIN EMAIL = " + request.getEmail());
+        System.out.println("LOGIN PASSWORD = " + request.getPassword());
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalStateException("Authenticated user missing from DB"));
         log.info("User logged in: {}", user.getEmail());
+        System.out.println("USER FOUND: " + user.getEmail());
+        System.out.println("DB PASSWORD: " + user.getPassword());
         return buildAuthResponse(user);
     }
 

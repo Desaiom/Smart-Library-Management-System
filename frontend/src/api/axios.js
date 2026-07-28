@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
  * - A response interceptor surfaces API errors and handles 401 by logging out.
  */
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL:  '/api',
   headers: { 'Content-Type': 'application/json' },
 });
 

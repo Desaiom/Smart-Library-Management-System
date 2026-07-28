@@ -66,7 +66,7 @@ public class SecurityConfig {
                 .exceptionHandling(eh -> eh.authenticationEntryPoint(jwtAuthEntryPoint))
                 .authorizeHttpRequests(auth -> auth
                         // public
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/**", "/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/books/**", "/categories/**").permitAll()
                         .requestMatchers("/uploads/**", "/v3/api-docs/**", "/swagger-ui/**",
                                 "/swagger-ui.html", "/h2-console/**", "/actuator/health").permitAll()

@@ -67,17 +67,17 @@ public class DataSeeder implements CommandLineRunner {
 
     private void seedUsers() {
         userRepository.save(User.builder()
-                .name("Library Admin").email("admin@library.com")
+                .name("Library Admin").email("admin@gmail.com")
                 .password(passwordEncoder.encode("admin123"))
                 .phone("9000000001").address("HQ").role(Role.ADMIN).build());
 
         userRepository.save(User.builder()
-                .name("Head Librarian").email("librarian@library.com")
+                .name("Head Librarian").email("librarian@gmail.com")
                 .password(passwordEncoder.encode("librarian123"))
                 .phone("9000000002").address("Desk 1").role(Role.LIBRARIAN).build());
 
         userRepository.save(User.builder()
-                .name("Demo Member").email("user@library.com")
+                .name("Demo Member").email("user@gmail.com")
                 .password(passwordEncoder.encode("user123"))
                 .phone("9000000003").address("City").role(Role.USER).build());
     }

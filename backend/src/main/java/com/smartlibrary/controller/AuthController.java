@@ -30,6 +30,7 @@ public class AuthController {
     @Operation(summary = "Register a new account")
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<AuthResponse>> register(@Valid @RequestBody RegisterRequest request) {
+        System.out.println("LOGIN ENDPOINT HIT");
         AuthResponse response = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok("Registration successful", response));
@@ -38,6 +39,8 @@ public class AuthController {
     @Operation(summary = "Authenticate and receive a JWT")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
+
+        System.out.println("LOGIN ENDPOINT HIT");
         return ResponseEntity.ok(ApiResponse.ok("Login successful", authService.login(request)));
     }
 
@@ -47,5 +50,30 @@ public class AuthController {
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization) {
         authService.logout(authorization);
         return ResponseEntity.ok(ApiResponse.ok("Logged out", null));
+    }
+
+    @PostMapping("/register/admin")
+    public ResponseEntity<ApiResponse<AuthResponse>> registerAdmin(
+            @Valid @RequestBody RegisterRequest request) {
+
+        request.setRole("ADMIN");
+
+        AuthResponse response = authService.register(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.ok("Admin registration successful", response));
+    }
+
+
+    @PostMapping("/register/librarian")
+    public ResponseEntity<ApiResponse<AuthResponse>> registerLibrarian(
+            @Valid @RequestBody RegisterRequest request) {
+
+        request.setRole("LIBRARIAN");
+
+        AuthResponse response = authService.register(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.ok("Librarian registration successful", response));
     }
 }
