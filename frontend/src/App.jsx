@@ -5,7 +5,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-// import AdminRegister from "./pages/auth/AdminRegister";
+import AdminRegister from "./pages/auth/AdminRegister";
+import LibrarianRegister from "./pages/auth/LibrarianRegister";
 import Books from "./pages/Books";
 import BookDetails from "./pages/BookDetails";
 import BookForm from "./pages/BookForm";
@@ -28,8 +29,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/register/admin" element={<AdminRegister />} /> */}
-          {/* <Route path="/register/librarian" element={<LibrarianRegister />} /> */}
+          <Route path="/register/admin" element={<AdminRegister />} />
+          <Route path="/register/librarian" element={<LibrarianRegister />} />
           <Route path="/books" element={<Books />} />
           <Route path="/books/:id" element={<BookDetails />} />
 

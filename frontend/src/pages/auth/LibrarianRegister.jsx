@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { authApi } from '../../api/authApi';
-import {SignupForm} from "../../components/SignupForm";
+import SignupForm from "../../components/SignupForm";
 
 export default function LibrarianRegister() {
   const navigate = useNavigate();

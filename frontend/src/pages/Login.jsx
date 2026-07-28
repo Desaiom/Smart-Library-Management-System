@@ -64,9 +64,7 @@ export default function Login() {
                 <p className="text-center mt-3 mb-0 small">
                   No account? <Link to="/register">Register</Link>
                 </p>
-                <div className="alert alert-light border mt-3 small mb-0">
-                  <strong>Demo:</strong> admin@library.com / admin123
-                </div>
+                
               </div>
             </div>
           </div>

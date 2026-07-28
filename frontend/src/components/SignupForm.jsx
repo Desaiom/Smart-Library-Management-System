@@ -1,34 +1,21 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-export default function SignupForm({
-  title,
-  form,
-  handleChange,
-  handleSubmit,
-  loading
-}) {
-
+export default function SignupForm({ title, form, handleChange, handleSubmit, loading }) {
   return (
     <div className="auth-wrapper">
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">
-
             <div className="card shadow-sm">
               <div className="card-body p-4">
-
                 <h4 className="mb-4 text-center">
                   <i className="bi bi-person-plus me-2"></i>
                   {title}
                 </h4>
 
-
                 <form onSubmit={handleSubmit}>
-
                   <div className="mb-3">
-                    <label className="form-label">
-                      Full Name
-                    </label>
+                    <label className="form-label">Full Name</label>
 
                     <input
                       name="name"
@@ -39,11 +26,8 @@ export default function SignupForm({
                     />
                   </div>
 
-
                   <div className="mb-3">
-                    <label className="form-label">
-                      Email
-                    </label>
+                    <label className="form-label">Email</label>
 
                     <input
                       type="email"
@@ -55,11 +39,8 @@ export default function SignupForm({
                     />
                   </div>
 
-
                   <div className="mb-3">
-                    <label className="form-label">
-                      Password
-                    </label>
+                    <label className="form-label">Password</label>
 
                     <input
                       type="password"
@@ -72,13 +53,9 @@ export default function SignupForm({
                     />
                   </div>
 
-
                   <div className="row">
-
                     <div className="col-md-6 mb-3">
-                      <label className="form-label">
-                        Phone
-                      </label>
+                      <label className="form-label">Phone</label>
 
                       <input
                         name="phone"
@@ -88,11 +65,8 @@ export default function SignupForm({
                       />
                     </div>
 
-
                     <div className="col-md-6 mb-3">
-                      <label className="form-label">
-                        Address
-                      </label>
+                      <label className="form-label">Address</label>
 
                       <input
                         name="address"
@@ -101,34 +75,19 @@ export default function SignupForm({
                         onChange={handleChange}
                       />
                     </div>
-
                   </div>
 
-
-                  <button
-                    className="btn btn-primary w-100"
-                    disabled={loading}
-                  >
-                    {loading
-                      ? "Creating..."
-                      : "Create Account"
-                    }
+                  <button className="btn btn-primary w-100" disabled={loading}>
+                    {loading ? "Creating..." : "Create Account"}
                   </button>
-
-
                 </form>
-
 
                 <p className="text-center mt-3 mb-0 small">
                   Already registered?
-                  <Link to="/login">
-                    {" "}Login
-                  </Link>
+                  <Link to="/login"> Login</Link>
                 </p>
-
               </div>
             </div>
-
           </div>
         </div>
       </div>
