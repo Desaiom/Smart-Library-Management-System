@@ -1,28 +1,27 @@
-# =====================================================================
-# Base configuration (shared by all profiles).
-# Active profile is chosen via SPRING_PROFILES_ACTIVE or the value below.
-# =====================================================================
 spring:
   application:
     name: smart-library
+
   profiles:
-    active: dev
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
   servlet:
     multipart:
       enabled: true
       max-file-size: 10MB
       max-request-size: 10MB
+
   jpa:
     open-in-view: false
     properties:
       hibernate:
         format_sql: true
+
   mail:
     host: smtp.gmail.com
     port: 587
-    username: omdesai0305@gmail.com
-    password: zdyv psit liwj nmnz
-
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -31,24 +30,25 @@ spring:
             enable: true
 
 cloudinary:
-  cloud-name: dkddidsq8
-  api-key: 116326479536312
-  api-secret: CLfaGRhBkrj65hlsVF2sYNelSKw
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
 
 server:
-  port: 8080
+  port: ${PORT:8080}
   error:
     include-message: always
 
-# Custom application properties, bound by @ConfigurationProperties(prefix = "library")
 library:
   jwt:
-    secret: "change-me-in-prod-use-a-64-byte-base64-secret-0123456789abcdef0123456789abcdef"
-    expiration-ms: 86400000        # 24 hours
+    secret: ${JWT_SECRET}
+    expiration-ms: 86400000
+
   borrow:
     loan-period-days: 14
     fine-per-day: 5.0
     max-active-borrows: 5
+
   storage:
     upload-dir: uploads
 
