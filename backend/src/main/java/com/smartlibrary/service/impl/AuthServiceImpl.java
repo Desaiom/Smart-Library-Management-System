@@ -1,8 +1,6 @@
 package com.smartlibrary.service.impl;
 
-import com.smartlibrary.dto.auth.AuthResponse;
-import com.smartlibrary.dto.auth.LoginRequest;
-import com.smartlibrary.dto.auth.RegisterRequest;
+import com.smartlibrary.dto.auth.*;
 import com.smartlibrary.entity.Role;
 import com.smartlibrary.entity.User;
 import com.smartlibrary.exception.DuplicateResourceException;
@@ -17,6 +15,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Authentication service.
@@ -33,17 +34,18 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final TokenBlacklist tokenBlacklist;
-
+    private final EmailService emailService;
     public AuthServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
                            AuthenticationManager authenticationManager,
                            JwtService jwtService,
-                           TokenBlacklist tokenBlacklist) {
+                           TokenBlacklist tokenBlacklist, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.tokenBlacklist = tokenBlacklist;
+        this.emailService = emailService;
     }
 
     @Override
@@ -129,5 +131,38 @@ public class AuthServiceImpl implements AuthService {
                 .email(user.getEmail())
                 .role(user.getRole().name())
                 .build();
+    }
+    public void forgotPassword(ForgotPasswordRequest request) {
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String token = UUID.randomUUID().toString();
+
+        user.setResetToken(token);
+        user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(15));
+
+        userRepository.save(user);
+
+        emailService.sendPasswordResetEmail(
+                user.getEmail(),
+                token
+        );
+    }
+    public void resetPassword(ResetPasswordRequest request) {
+
+        User user = userRepository.findByResetToken(request.getToken())
+                .orElseThrow(() -> new RuntimeException("Invalid token"));
+
+        if (user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Token expired");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        user.setResetToken(null);
+        user.setResetTokenExpiry(null);
+
+        userRepository.save(user);
     }
 }

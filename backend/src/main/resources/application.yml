@@ -9,13 +9,31 @@ spring:
     active: dev
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
   jpa:
     open-in-view: false
     properties:
       hibernate:
         format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: omdesai0305@gmail.com
+    password: zdyv psit liwj nmnz
+
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+cloudinary:
+  cloud-name: dkddidsq8
+  api-key: 116326479536312
+  api-secret: CLfaGRhBkrj65hlsVF2sYNelSKw
 
 server:
   port: 8080

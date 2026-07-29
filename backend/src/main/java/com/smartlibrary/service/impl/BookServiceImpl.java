@@ -17,6 +17,7 @@ import com.smartlibrary.repository.projection.BookSummary;
 import com.smartlibrary.repository.spec.BookSpecifications;
 import com.smartlibrary.service.BookService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -44,38 +46,61 @@ public class BookServiceImpl implements BookService {
     private final CategoryRepository categoryRepository;
     private final ReviewRepository reviewRepository;
     private final BookMapper bookMapper;
+    private final CloudinaryService cloudinaryService;
 
     public BookServiceImpl(BookRepository bookRepository,
                            CategoryRepository categoryRepository,
                            ReviewRepository reviewRepository,
-                           BookMapper bookMapper) {
+                           BookMapper bookMapper ,CloudinaryService cloudinaryService) {
         this.bookRepository = bookRepository;
         this.categoryRepository = categoryRepository;
         this.reviewRepository = reviewRepository;
         this.bookMapper = bookMapper;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
-    @Transactional
     public BookResponse create(BookRequest request) {
-        if (bookRepository.existsByIsbn(request.getIsbn())) {
-            throw new DuplicateResourceException("Book with ISBN already exists: " + request.getIsbn());
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public BookResponse create(BookRequest request, MultipartFile image) {
+
+        Category category = null;
+
+        if (request.getCategoryId() != null) {
+            category = categoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         }
-        Category category = resolveCategory(request.getCategoryId());
+
         Book book = bookMapper.toEntity(request, category);
-        Book saved = bookRepository.save(book);
-        log.info("Created book id={} title='{}'", saved.getId(), saved.getTitle());
-        return toResponse(saved);
+
+        if (image != null && !image.isEmpty()) {
+            String imageUrl = cloudinaryService.upload(image);
+            book.setImageUrl(imageUrl);
+        }
+
+        bookRepository.save(book);
+
+        return bookMapper.toResponse(book, null);
     }
 
     @Override
     @Transactional
-    public BookResponse update(Long id, BookRequest request) {
+    public BookResponse update(Long id, BookRequest request, MultipartFile image) {
+
         Book book = findBook(id);
-        if (!book.getIsbn().equals(request.getIsbn()) && bookRepository.existsByIsbn(request.getIsbn())) {
-            throw new DuplicateResourceException("Book with ISBN already exists: " + request.getIsbn());
+
+        if (!book.getIsbn().equals(request.getIsbn())
+                && bookRepository.existsByIsbn(request.getIsbn())) {
+            throw new DuplicateResourceException(
+                    "Book with ISBN already exists: " + request.getIsbn());
         }
+
         int borrowed = book.getQuantity() - book.getAvailableQuantity();
+
         book.setTitle(request.getTitle());
         book.setAuthor(request.getAuthor());
         book.setIsbn(request.getIsbn());
@@ -84,21 +109,40 @@ public class BookServiceImpl implements BookService {
         book.setAvailableQuantity(Math.max(0, request.getQuantity() - borrowed));
         book.setPrice(request.getPrice());
         book.setPublicationYear(request.getPublicationYear());
-        book.setImageUrl(request.getImageUrl());
         book.setCategory(resolveCategory(request.getCategoryId()));
+
+        if (image != null && !image.isEmpty()) {
+
+            cloudinaryService.delete(book.getImageUrl());
+
+            String imageUrl = cloudinaryService.upload(image);
+
+            book.setImageUrl(imageUrl);
+        }
+
+        bookRepository.save(book);
+
         return toResponse(book);
     }
 
     @Override
     @Transactional
-    public BookResponse patch(Long id, BookPatchRequest request) {
+    public BookResponse patch(Long id,
+                              BookPatchRequest request,
+                              MultipartFile image) {
         Book book = findBook(id);
         if (request.getTitle() != null) book.setTitle(request.getTitle());
         if (request.getAuthor() != null) book.setAuthor(request.getAuthor());
         if (request.getDescription() != null) book.setDescription(request.getDescription());
         if (request.getPrice() != null) book.setPrice(request.getPrice());
         if (request.getPublicationYear() != null) book.setPublicationYear(request.getPublicationYear());
-        if (request.getImageUrl() != null) book.setImageUrl(request.getImageUrl());
+        if (image != null && !image.isEmpty()) {
+            cloudinaryService.delete(book.getImageUrl());
+
+            String imageUrl = cloudinaryService.upload(image);
+
+            book.setImageUrl(imageUrl);
+        }
         if (request.getCategoryId() != null) book.setCategory(resolveCategory(request.getCategoryId()));
         if (request.getQuantity() != null) {
             int borrowed = book.getQuantity() - book.getAvailableQuantity();
@@ -112,6 +156,8 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void delete(Long id) {
         Book book = findBook(id);
+        cloudinaryService.delete(book.getImageUrl());
+
         bookRepository.delete(book);
         log.info("Deleted book id={}", id);
     }

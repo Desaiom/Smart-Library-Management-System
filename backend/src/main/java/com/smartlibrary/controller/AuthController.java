@@ -1,8 +1,6 @@
 package com.smartlibrary.controller;
 
-import com.smartlibrary.dto.auth.AuthResponse;
-import com.smartlibrary.dto.auth.LoginRequest;
-import com.smartlibrary.dto.auth.RegisterRequest;
+import com.smartlibrary.dto.auth.*;
 import com.smartlibrary.dto.common.ApiResponse;
 import com.smartlibrary.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -75,5 +73,26 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok("Librarian registration successful", response));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ApiResponse<?>> forgotPassword(
+            @RequestBody ForgotPasswordRequest request) {
+
+        authService.forgotPassword(request);
+
+        return ResponseEntity.ok(
+                ApiResponse.ok("Password reset email sent", null)
+        );
+    }
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<?>> resetPassword(
+            @RequestBody ResetPasswordRequest request) {
+
+        authService.resetPassword(request);
+
+        return ResponseEntity.ok(
+                ApiResponse.ok("Password changed successfully", null)
+        );
     }
 }

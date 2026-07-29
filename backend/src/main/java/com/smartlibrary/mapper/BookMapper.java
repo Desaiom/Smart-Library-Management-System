@@ -25,7 +25,6 @@ public class BookMapper {
                 .availableQuantity(request.getQuantity())
                 .price(request.getPrice())
                 .publicationYear(request.getPublicationYear())
-                .imageUrl(request.getImageUrl())
                 .category(category)
                 .build();
     }

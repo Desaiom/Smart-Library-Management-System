@@ -60,7 +60,9 @@ public class User {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    private String resetToken;
 
+    private LocalDateTime resetTokenExpiry;
     /**
      * @OneToOne extension record. Cascade ALL + orphanRemoval so the profile
      * lifecycle is tied to the owning user.

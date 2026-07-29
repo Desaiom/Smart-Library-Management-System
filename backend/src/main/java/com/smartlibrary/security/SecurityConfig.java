@@ -61,13 +61,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> {})
+                .cors(cors -> {
+                })
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(eh -> eh.authenticationEntryPoint(jwtAuthEntryPoint))
                 .authorizeHttpRequests(auth -> auth
                         // public
                         .requestMatchers("/auth/**", "/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/books/**", "/categories/**").permitAll()
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/books/**",
+                                "/categories/**",
+                                "/reviews/**"
+                        ).permitAll()
                         .requestMatchers("/uploads/**", "/v3/api-docs/**", "/swagger-ui/**",
                                 "/swagger-ui.html", "/h2-console/**", "/actuator/health").permitAll()
                         // writes on books/categories require staff roles

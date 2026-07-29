@@ -1,8 +1,6 @@
 package com.smartlibrary.service;
 
-import com.smartlibrary.dto.auth.AuthResponse;
-import com.smartlibrary.dto.auth.LoginRequest;
-import com.smartlibrary.dto.auth.RegisterRequest;
+import com.smartlibrary.dto.auth.*;
 
 /**
  * Authentication operations: registration, login and logout (token invalidation).
@@ -14,4 +12,8 @@ public interface AuthService {
     AuthResponse login(LoginRequest request);
 
     void logout(String bearerToken);
+
+    void forgotPassword(ForgotPasswordRequest request);
+
+    void resetPassword(ResetPasswordRequest request);
 }

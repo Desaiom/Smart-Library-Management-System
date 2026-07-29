@@ -5,6 +5,8 @@ import com.smartlibrary.dto.book.BookRequest;
 import com.smartlibrary.dto.book.BookResponse;
 import com.smartlibrary.dto.common.PageResponse;
 import com.smartlibrary.repository.projection.BookSummary;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,9 +15,13 @@ public interface BookService {
 
     BookResponse create(BookRequest request);
 
-    BookResponse update(Long id, BookRequest request);
+    @Transactional
+    BookResponse create(BookRequest request,
+                        MultipartFile image);
 
-    BookResponse patch(Long id, BookPatchRequest request);
+    BookResponse update(Long id, BookRequest request,MultipartFile image);
+
+    BookResponse patch(Long id, BookPatchRequest request,MultipartFile image);
 
     void delete(Long id);
 

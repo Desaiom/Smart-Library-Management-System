@@ -11,8 +11,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -86,24 +88,57 @@ public class BookController {
     }
 
     @Operation(summary = "Create a book")
-    @PostMapping
-    public ResponseEntity<ApiResponse<BookResponse>> create(@Valid @RequestBody BookRequest request) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<BookResponse>> create(
+
+            @RequestPart("book") BookRequest request,
+
+            @RequestPart(value = "image", required = false)
+            MultipartFile image
+    ) {
+
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.ok("Book created", bookService.create(request)));
+                .body(ApiResponse.ok(
+                        "Book created",
+                        bookService.create(request, image)
+                ));
     }
 
     @Operation(summary = "Replace a book")
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<BookResponse>> update(@PathVariable Long id,
-                                                            @Valid @RequestBody BookRequest request) {
-        return ResponseEntity.ok(ApiResponse.ok("Book updated", bookService.update(id, request)));
+    @PutMapping(value="/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+    public ResponseEntity<ApiResponse<BookResponse>> update(
+
+            @PathVariable Long id,
+
+            @RequestPart("book") BookRequest request,
+
+            @RequestPart(value = "image", required = false)
+            MultipartFile image
+    ) {
+
+        return ResponseEntity.ok(
+                ApiResponse.ok(
+                        "Book updated",
+                        bookService.update(id, request, image)
+                )
+        );
     }
 
     @Operation(summary = "Partially update a book")
-    @PatchMapping("/{id}")
-    public ResponseEntity<ApiResponse<BookResponse>> patch(@PathVariable Long id,
-                                                           @RequestBody BookPatchRequest request) {
-        return ResponseEntity.ok(ApiResponse.ok("Book updated", bookService.patch(id, request)));
+    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<BookResponse>> patch(
+            @PathVariable Long id,
+            @RequestPart("book") BookPatchRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+
+        return ResponseEntity.ok(
+                ApiResponse.ok(
+                        "Book updated",
+                        bookService.patch(id, request, image)
+                )
+        );
     }
 
     @Operation(summary = "Delete a book")
