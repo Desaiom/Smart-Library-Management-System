@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 export default function Register() {
   const { register, loading } = useAuth();
   const navigate = useNavigate();
-
+  const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -52,14 +52,37 @@ export default function Register() {
                     onChange={handleChange}
                   />
 
-                  <Input
-                    label="Password"
-                    name="password"
-                    type="password"
-                    value={form.password}
-                    onChange={handleChange}
-                  />
+                  <div className="mb-3">
+                    <label htmlFor="password" className="form-label">
+                      Password
+                    </label>
 
+                    <div className="position-relative">
+                      <input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        className="form-control pe-5"
+                        name="password"
+                        value={form.password}
+                        onChange={handleChange}
+                        placeholder="Enter your password"
+                        required
+                      />
+
+                      <i
+                        className={`bi ${showPassword ? "bi-eye-slash-fill" : "bi-eye-fill"}`}
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={{
+                          position: "absolute",
+                          right: "15px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          cursor: "pointer",
+                          fontSize: "18px",
+                        }}
+                      />
+                    </div>
+                  </div>
                   <Input label="Phone" name="phone" value={form.phone} onChange={handleChange} />
 
                   <Input

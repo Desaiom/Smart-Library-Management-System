@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { bookApi } from '../api/bookApi';
-import { categoryApi } from '../api/categoryApi';
-import { useAuth } from '../context/AuthContext';
-import Loader from '../components/Loader';
-import EmptyState from '../components/EmptyState';
-import Pagination from '../components/Pagination';
-import RatingStars from '../components/RatingStars';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { bookApi } from "../api/bookApi";
+import { categoryApi } from "../api/categoryApi";
+import { useAuth } from "../context/AuthContext";
+import Loader from "../components/Loader";
+import EmptyState from "../components/EmptyState";
+import Pagination from "../components/Pagination";
+import RatingStars from "../components/RatingStars";
 
 export default function Books() {
   const { isStaff } = useAuth();
@@ -15,7 +15,7 @@ export default function Books() {
   const [pageNum, setPageNum] = useState(0);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [filters, setFilters] = useState({ keyword: '', categoryId: '', available: false });
+  const [filters, setFilters] = useState({ keyword: "", categoryId: "", available: false });
 
   const load = async (p = 0) => {
     setLoading(true);
@@ -31,7 +31,7 @@ export default function Books() {
           size: 8,
         });
       } else {
-        data = await bookApi.list({ page: p, size: 8, sortBy: 'title', direction: 'asc' });
+        data = await bookApi.list({ page: p, size: 8, sortBy: "title", direction: "asc" });
       }
       setPage(data);
       setPageNum(p);
@@ -43,9 +43,11 @@ export default function Books() {
   };
 
   useEffect(() => {
-    categoryApi.list().then(setCategories).catch(() => {});
+    categoryApi
+      .list()
+      .then(setCategories)
+      .catch(() => {});
     load(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const applyFilters = (e) => {
@@ -54,10 +56,10 @@ export default function Books() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this book?')) return;
+    if (!window.confirm("Delete this book?")) return;
     try {
       await bookApi.remove(id);
-      toast.success('Book deleted');
+      toast.success("Book deleted");
       load(pageNum);
     } catch (err) {
       toast.error(err.message);
@@ -88,11 +90,13 @@ export default function Books() {
           <select
             className="form-select"
             value={filters.categoryId}
-            onChange={(e) => setFilters({ ...filters, categoryId: e.target.value, keyword: '' })}
+            onChange={(e) => setFilters({ ...filters, categoryId: e.target.value, keyword: "" })}
           >
             <option value="">All categories</option>
             {categories.map((c) => (
-              <option key={c.id} value={c.id}>{c.name}</option>
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
             ))}
           </select>
         </div>
@@ -103,9 +107,11 @@ export default function Books() {
               type="checkbox"
               id="availOnly"
               checked={filters.available}
-              onChange={(e) => setFilters({ ...filters, available: e.target.checked, keyword: '' })}
+              onChange={(e) => setFilters({ ...filters, available: e.target.checked, keyword: "" })}
             />
-            <label className="form-check-label" htmlFor="availOnly">Available only</label>
+            <label className="form-check-label" htmlFor="availOnly">
+              Available only
+            </label>
           </div>
         </div>
         <div className="col-md-2">
@@ -126,7 +132,11 @@ export default function Books() {
                   <Link to={`/books/${b.id}`}>
                     <img
                       className="card-img-top book-cover"
-                      src={b.imageUrl || 'https://placehold.co/300x180?text=No+Cover'}
+                      src={
+                        b.imageUrl
+                          ? `http://localhost:8080${b.imageUrl}`
+                          : "https://placehold.co/300x180?text=No+Cover"
+                      }
                       alt={b.title}
                     />
                   </Link>
@@ -135,21 +145,34 @@ export default function Books() {
                     <small className="text-muted d-block text-truncate">{b.author}</small>
                     <RatingStars value={b.averageRating} />
                     <div className="mt-2">
-                      <span className={`badge ${b.availableQuantity > 0 ? 'bg-success' : 'bg-secondary'}`}>
-                        {b.availableQuantity > 0 ? `${b.availableQuantity} available` : 'Out of stock'}
+                      <span
+                        className={`badge ${b.availableQuantity > 0 ? "bg-success" : "bg-secondary"}`}
+                      >
+                        {b.availableQuantity > 0
+                          ? `${b.availableQuantity} available`
+                          : "Out of stock"}
                       </span>
                     </div>
                   </div>
                   <div className="card-footer bg-white d-flex gap-2">
-                    <Link to={`/books/${b.id}`} className="btn btn-sm btn-outline-primary flex-grow-1">
+                    <Link
+                      to={`/books/${b.id}`}
+                      className="btn btn-sm btn-outline-primary flex-grow-1"
+                    >
                       Details
                     </Link>
                     {isStaff && (
                       <>
-                        <Link to={`/books/${b.id}/edit`} className="btn btn-sm btn-outline-secondary">
+                        <Link
+                          to={`/books/${b.id}/edit`}
+                          className="btn btn-sm btn-outline-secondary"
+                        >
                           <i className="bi bi-pencil"></i>
                         </Link>
-                        <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(b.id)}>
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => handleDelete(b.id)}
+                        >
                           <i className="bi bi-trash"></i>
                         </button>
                       </>

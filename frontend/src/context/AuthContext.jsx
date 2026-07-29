@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { authApi } from '../api/authApi';
-import { TOKEN_KEY, USER_KEY } from '../api/axios';
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { authApi } from "../api/authApi";
+import { TOKEN_KEY, USER_KEY } from "../api/axios";
 
 const AuthContext = createContext(null);
 
@@ -45,7 +45,27 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   };
+  const registerAdmin = async (payload) => {
+    setLoading(true);
+    try {
+      const data = await authApi.registerAdmin(payload);
+      persist(data);
+      return data;
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const registerLibrarian = async (payload) => {
+    setLoading(true);
+    try {
+      const data = await authApi.registerLibrarian(payload);
+      persist(data);
+      return data;
+    } finally {
+      setLoading(false);
+    }
+  };
   const logout = async () => {
     try {
       await authApi.logout();
@@ -62,22 +82,25 @@ export function AuthProvider({ children }) {
       const raw = localStorage.getItem(USER_KEY);
       setUser(raw ? JSON.parse(raw) : null);
     };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   const value = useMemo(() => {
     const role = user?.role;
+
     return {
       user,
       loading,
       login,
       register,
+      registerAdmin,
+      registerLibrarian,
       logout,
       isAuthenticated: !!user,
-      isAdmin: role === 'ADMIN',
-      isLibrarian: role === 'LIBRARIAN',
-      isStaff: role === 'ADMIN' || role === 'LIBRARIAN',
+      isAdmin: role === "ADMIN",
+      isLibrarian: role === "LIBRARIAN",
+      isStaff: role === "ADMIN" || role === "LIBRARIAN",
     };
   }, [user, loading]);
 
@@ -86,6 +109,6 @@ export function AuthProvider({ children }) {
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within an AuthProvider');
+  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
   return ctx;
 }

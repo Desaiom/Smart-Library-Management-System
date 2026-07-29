@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
 export default function SignupForm({ title, form, handleChange, handleSubmit, loading }) {
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="auth-wrapper">
       <div className="container">
@@ -42,15 +43,33 @@ export default function SignupForm({ title, form, handleChange, handleSubmit, lo
                   <div className="mb-3">
                     <label className="form-label">Password</label>
 
-                    <input
-                      type="password"
-                      name="password"
-                      className="form-control"
-                      value={form.password}
-                      onChange={handleChange}
-                      required
-                      minLength={6}
-                    />
+                    <div className="mb-3">
+                      <div className="position-relative">
+                        <input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          className="form-control pe-5"
+                          name="password"
+                          value={form.password}
+                          onChange={handleChange}
+                          placeholder="Enter your password"
+                          required
+                        />
+
+                        <i
+                          className={`bi ${showPassword ? "bi-eye-slash-fill" : "bi-eye-fill"}`}
+                          onClick={() => setShowPassword(!showPassword)}
+                          style={{
+                            position: "absolute",
+                            right: "15px",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            cursor: "pointer",
+                            fontSize: "18px",
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div className="row">

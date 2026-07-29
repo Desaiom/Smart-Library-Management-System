@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
  */
 const api = axios.create({
   baseURL:  '/api',
-  headers: { 'Content-Type': 'application/json' },
+
 });
 
 export const TOKEN_KEY = 'sl_token';

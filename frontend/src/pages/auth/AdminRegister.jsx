@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { authApi } from '../../api/authApi';
+import { authApi } from "../../api/authApi";
 import SignupForm from "../../components/SignupForm";
+import { useAuth } from "../../context/AuthContext";
 
 export default function AdminRegister() {
   const navigate = useNavigate();
+  const { registerAdmin } = useAuth();
 
   const [form, setForm] = useState({
     name: "",
@@ -30,11 +32,11 @@ export default function AdminRegister() {
     try {
       setLoading(true);
 
-      await authApi.registerAdmin(form);
+      await registerAdmin(form);
 
       toast.success("Admin account created");
 
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       toast.error(err.message);
     } finally {

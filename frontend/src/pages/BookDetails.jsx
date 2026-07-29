@@ -80,7 +80,7 @@ export default function BookDetails() {
           <img
             className="img-fluid rounded shadow-sm w-100 book-cover"
             style={{ height: 'auto', maxHeight: 420 }}
-            src={book.imageUrl || 'https://placehold.co/400x500?text=No+Cover'}
+            src={`http://localhost:8080${book.imageUrl}`}
             alt={book.title}
           />
         </div>

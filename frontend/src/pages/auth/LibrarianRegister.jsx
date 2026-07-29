@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { authApi } from '../../api/authApi';
+import { authApi } from "../../api/authApi";
+import { useAuth } from "../../context/AuthContext";
 import SignupForm from "../../components/SignupForm";
 
 export default function LibrarianRegister() {
   const navigate = useNavigate();
 
+  const { registerLibrarian } = useAuth();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -24,17 +26,17 @@ export default function LibrarianRegister() {
     });
   };
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
 
-      await authApi.registerLibrarian(form);
+      await registerLibrarian(form);
 
-      toast.success("Librarian account created");
+      toast.success("Admin account created");
 
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       toast.error(err.message);
     } finally {

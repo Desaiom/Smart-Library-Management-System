@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminRegister from "./pages/auth/AdminRegister";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import LibrarianRegister from "./pages/auth/LibrarianRegister";
 import Books from "./pages/Books";
 import BookDetails from "./pages/BookDetails";
@@ -34,6 +36,9 @@ export default function App() {
           <Route path="/books" element={<Books />} />
           <Route path="/books/:id" element={<BookDetails />} />
 
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/books/new"
             element={

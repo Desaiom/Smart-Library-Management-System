@@ -8,6 +8,8 @@ export const authApi = {
     api.post("/auth/register/librarian", payload).then((r) => r.data.data),
 
   login: (payload) => api.post("/auth/login", payload).then((r) => r.data.data),
+  forgotPassword: (payload) => api.post("/auth/forgot-password", payload).then((r) => r.data.data),
 
+  resetPassword: (payload) => api.post("/auth/reset-password", payload).then((r) => r.data.data),
   logout: () => api.post("/auth/logout").then((r) => r.data),
 };
